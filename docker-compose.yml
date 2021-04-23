@@ -1,0 +1,71 @@
+version: "3.7"
+services: 
+  database:
+    image: mysql:5.7
+    container_name: league-champions-database
+    environment:
+      MYSQL_DATABASE: leaguedb
+      MYSQL_ROOT_PASSWORD: nodeapp
+      MYSQL_USER: nodeapp
+      MYSQL_PASSWORD: nodeapp
+      DATABASE_HOST: database
+    ports:
+      - "3307:3306"
+    volumes:
+      - league-db:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: league-champions-phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: database
+      PMA_USER: nodeapp
+      PMA_PASSWORD: nodeapp
+    ports:
+      - "8080:80"
+
+  
+  backend: 
+    build: 
+      context: ./backend
+      target: development
+    image: msalekmouad/league-champions-backend:1.0
+    container_name: league-champions-backend
+    environment:
+      DATABASE_HOST: database
+      DATABASE_PORT: 3306
+      MYSQL_DATABASE: leaguedb
+      MYSQL_USER: nodeapp
+      MYSQL_PASSWORD: nodeapp
+      DATABASE_TEST_HOST: 
+      DATABASE_TEST_PORT: 3307
+      MYSQL_TEST_USER: 
+      MYSQL_TEST_PASSWORD: 
+      MYSQL_TEST_DATABASE: 
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    volumes: 
+      - ./backend:/app/backend
+      - league-data:/app/backend/data
+    depends_on:
+      - database
+    restart: on-failure
+
+
+  frontend:
+    build: 
+      context: ./frontend
+      target: development
+    image: msalekmouad/league-champions-frontend:1.0
+    container_name: league-champions-frontend
+    volumes: 
+      - ./frontend:/app/frontend
+    ports:
+      - '8081:8080'
+
+volumes:
+  league-db:
+  league-data:
+

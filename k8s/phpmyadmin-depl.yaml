@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: phpmyadmin-map
+data:
+  PMA_HOST: mysql-0.mysql
+  PMA_USER: nodeapp
+  PMA_PASSWORD: nodeapp
+  MYSQL_ROOT_PASSWORD: nodeapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin-depl
+  labels:
+    app: leaguechampions-phpmyadmin
+spec:
+  selector:
+    matchLabels:
+      app: leaguechampions-phpmyadmin
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: leaguechampions-phpmyadmin
+    spec:
+      containers:
+      - image: phpmyadmin/phpmyadmin
+        name: leaguechampions-phpmyadmin
+        envFrom:
+          - configMapRef:
+              name: phpmyadmin-map
+        ports:
+          - containerPort: 80
+            name: phpmyadmin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin-service
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: leaguechampions-phpmyadmin
+  type: NodePort
