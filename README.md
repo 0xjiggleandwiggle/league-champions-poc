@@ -137,6 +137,9 @@ after minikube is installed successfully in your machine lets begin deployment w
     ```
     
     >Note: now you good to go, if all seems good in the minikube dashboard you can access the app using the link from the following command: **minikube service --url frontend-service**
+
+
+Enjoy!
     
 
 
