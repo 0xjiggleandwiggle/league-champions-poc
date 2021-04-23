@@ -56,7 +56,7 @@ The app needs 3 containers:
     4. Next step run the back end container but first we must build the image :
          ```sh
          docker build --target development -t msalekmouad/leaguechampions-backend:dev ./backend
-         ````
+         ```
        
          + **- - target**: Set the target build stage to build. because in my docker file i have two stages the developement and the production, in the kubernetes deployment we need an image for production not developement.
          + **-t** or **- - tag**: Name and optionally a tag in the 'name:tag' format, you can replace [msalekmouad] with your dockher hub username , because you need to push it after for kubernetes deployment
