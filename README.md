@@ -7,7 +7,7 @@ this application is a POC i realised during my eningeering cursus, the applicati
 
 ## App Features
 
-- Add champions ( adding a champion u must enter the link of achampion from this website ex: https://leagueoflegends.fandom.com/wiki/[champions correct name ]/LoL)
+- Add champions ( adding a champion u must enter the link of achampion from this website ex: https://leagueoflegends.fandom.com/wiki/[name]/LoL)
 - Delete a champion
 - List of champions and their details
 
