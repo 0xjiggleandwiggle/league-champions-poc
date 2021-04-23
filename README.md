@@ -28,8 +28,7 @@ $ docker-compose up
 
 ##### - Option B (Docker commands):
 
-The app needs 3 containers:
-   +  Mysql container ( attach to a network and volume for persistance):
+The app needs 3 containers (Database, Backend, Frontend):
        1. First we create a volume using this command:
             ```sh
             $ docker volume create league-db
@@ -53,7 +52,8 @@ The app needs 3 containers:
                 + **MYSQL_DATABASE**: This variable is optional and allows you to specify the name of a database to be created on image startup. If a user/password was supplied (see below) then that user will be granted superuser access (corresponding to GRANT ALL) to this database.
                 + **MYSQL_USER, MYSQL_PASSWORD**: These variables are optional, used in conjunction to create a new user and to set that user's password. This user will be granted superuser permissions (see above) for the database specified by the MYSQL_DATABASE variable. Both variables are required for a user to be created.
             * **- - network**-: specify the network that the container will be added to in the startup
-    +  Backend container ( attach to a network and volume for persistance)
+            * 
+    -  Backend container ( attach to a network and volume for persistance)
         1. Next step run the back end container but first we must build the image :
              ```sh
              docker build --target development -t msalekmouad/leaguechampions-backend:dev ./backend
