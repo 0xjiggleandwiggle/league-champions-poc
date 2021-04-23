@@ -28,19 +28,19 @@ $ docker-compose up
 
 ##### - Option B (Docker commands):
 
-The app needs 3 containers (Database, Backend, Frontend):
+The app needs 3 containers:
+   +  Mysql container ( attack to a network and volume for persistance):
        1. First we create a volume using this command:
             ```sh
             $ docker volume create league-db
             ```
-
         2. also we need a network so all containers can communicate:
             ```sh
             $ docker network create leaguechampions-network
             ```
         3. now we need to run our mysql container:
             ```sh
-            $ docker run --name leaguechampions-database --mount source=leaguechampions_database,target=/var/lib/mysql -e MYSQL_ROOT_PASSWORD=nodeapp -e MYSQL_DATABASE=leaguedb    -e MYSQL_USER=nodeapp -e MYSQL_PASSWORD=nodeapp --network=leaguechampions-network -d mysql:5.7
+            $ docker run --name leaguechampions-database --mount source=leaguechampions_database,target=/var/lib/mysql -e MYSQL_ROOT_PASSWORD=nodeapp -e MYSQL_DATABASE=leaguedb -e MYSQL_USER=nodeapp -e MYSQL_PASSWORD=nodeapp --network=leaguechampions-network -d mysql:5.7
             ```
 
             * **- -name**: name of the container
@@ -52,8 +52,7 @@ The app needs 3 containers (Database, Backend, Frontend):
                 + **MYSQL_DATABASE**: This variable is optional and allows you to specify the name of a database to be created on image startup. If a user/password was supplied (see below) then that user will be granted superuser access (corresponding to GRANT ALL) to this database.
                 + **MYSQL_USER, MYSQL_PASSWORD**: These variables are optional, used in conjunction to create a new user and to set that user's password. This user will be granted superuser permissions (see above) for the database specified by the MYSQL_DATABASE variable. Both variables are required for a user to be created.
             * **- - network**-: specify the network that the container will be added to in the startup
-            * 
-    -  Backend container ( attach to a network and volume for persistance)
+    + Backend Container:  
         1. Next step run the back end container but first we must build the image :
              ```sh
              docker build --target development -t msalekmouad/leaguechampions-backend:dev ./backend
@@ -72,7 +71,7 @@ The app needs 3 containers (Database, Backend, Frontend):
             + **-p** or **- - publish**: Publish a container's port(s) to the host
             + **-- mount**: same as i explained above for mounting a volume, in this backend container i want to persist a JSON files data
             + **variable environements**: all other attributes is variable environement so we can connect the mysql database container
-    +  Frontend container ( attach to a network )
+    + Frontend container:
         1. and finally we need to build the frontend image:
             ```sh
             docker build --target development -t msalekmouad/leaguechampions-frontend:dev ./frontend
@@ -81,7 +80,6 @@ The app needs 3 containers (Database, Backend, Frontend):
             ```sh
             docker run --name leaguechampions-frontend -p 8081:8080 --network=leaguechampions-network -d msalekmouad/leaguechampions-frontend:dev
             ```
-
 
 
 ## Kubernetes (Deployment)
@@ -138,9 +136,6 @@ after minikube is installed successfully in your machine lets begin deployment w
     ```
     
     >Note: now you good to go, if all seems good in the minikube dashboard you can access the app using the link from the following command: **minikube service --url frontend-service**
-
-
-Enjoy!
     
 
 
